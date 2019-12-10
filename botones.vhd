@@ -20,6 +20,7 @@ entity botones is
         B4: in std_logic;
         B3: in std_logic;
         B2: in std_logic;
+        fijar: in std_logic;
         election: out std_logic_vector (8 downto 0)     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
     );
 end botones;
@@ -96,7 +97,7 @@ begin
         medio <= '0';
         en_prev <= '0';
     elsif clk'event and clk = '1' then
-        if en='1' and en_prev='0' then              --acabo de pulsar el boton (reset)
+        if ((en='1' and en_prev='0') or fijar = '1') then              --acabo de pulsar el boton (reset)
             medio <='0';
             arriba <= '0';
             en_prev <= '1';
@@ -118,12 +119,16 @@ begin
     if reset = '1' then
         bot <= (others => '0');
     elsif clk'event and clk = '1' then
-        if B4 = '1' then
-            bot <= "01";
-        elsif B3 = '1' then
-            bot <= "10";
-        elsif B2 = '1' then
-            bot <= "11";
+        if fijar = '1' then
+            bot <= (others => '0');
+        else
+            if B4 = '1' then
+                bot <= "01";
+            elsif B3 = '1' then
+                bot <= "10";
+            elsif B2 = '1' then
+                bot <= "11";
+            end if;
         end if;
     end if;
 end process;
@@ -140,10 +145,7 @@ election <= "000000001" when union = "0100" else
             "001000000" when union = "1100" else
             "010000000" when union = "1101" else
             "100000000" when union = "1110" else
---            "000000000" when inicio = '1' else        --falta poner a 0 eleccion al comienzo de cada turno (poner un enable al decodificador)
-            "000000000" ;
+            "000000000";
             
 
-
 end Behavioral;
-
