@@ -15,6 +15,7 @@ architecture testbench of tb_botones is
             B4: in std_logic;
             B3: in std_logic;
             B2: in std_logic;
+            fijar: in std_logic;
             election: out std_logic_vector (8 downto 0)       -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
                         
         );
@@ -25,6 +26,7 @@ architecture testbench of tb_botones is
         signal B4: std_logic;
         signal B3: std_logic;
         signal B2: std_logic;
+        signal fijar: std_logic;
         signal election: std_logic_vector (8 downto 0);        -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
  
         
@@ -41,6 +43,7 @@ begin
         B4 => B4,
         B3 => B3,
         B2 => B2,
+        fijar => fijar,
         election => election
     );
     
@@ -60,6 +63,7 @@ begin
          B4 <= '0';
          B3 <= '0';
          B2 <= '0';
+         fijar <= '0';
          wait for clk_period*200;
          reset <= '0';
          wait for clk_period*10;
@@ -69,7 +73,11 @@ begin
          wait for clk_period*10;
          B2 <= '1';
          wait for clk_period*10;
-         B2 <= '0';         
+         B2 <= '0'; 
+         wait for clk_period*10;
+         fijar <= '1';
+         wait for clk_period;
+         fijar <= '0';       
          wait;
     end process;
            
