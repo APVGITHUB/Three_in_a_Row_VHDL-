@@ -112,7 +112,7 @@ begin
     end if;
 end process;
 
--- qué boton se ha pulsado
+-- quÃ© boton se ha pulsado
 process(clk,reset)
 begin
     if reset = '1' then
@@ -141,8 +141,9 @@ election <= "000000001" when union = "0100" else
             "010000000" when union = "1101" else
             "100000000" when union = "1110" else
 --            "000000000" when inicio = '1' else        --falta poner a 0 eleccion al comienzo de cada turno (poner un enable al decodificador)
-            "---------" ;
+            "000000000" ;
             
 
 
 end Behavioral;
+
