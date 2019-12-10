@@ -20,6 +20,8 @@ entity botones is
         B4: in std_logic;
         B3: in std_logic;
         B2: in std_logic;
+        B1: in std_logic;
+        B1_prev: out std_logic;
         fijar: in std_logic;
         election: out std_logic_vector (8 downto 0)     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
     );
@@ -44,7 +46,7 @@ architecture Behavioral of botones is
     signal ovf2: std_logic;
    
     signal union: std_logic_vector(3 downto 0);
-
+    signal B1_previo: std_logic;
 
 begin
 
@@ -146,6 +148,21 @@ election <= "000000001" when union = "0100" else
             "010000000" when union = "1101" else
             "100000000" when union = "1110" else
             "000000000";
-            
+
+process (clk,reset)
+begin
+    if reset = '1' then
+        B1_previo <= '0';
+        B1_prev <= '0';
+    elsif clk'event and clk='1' then
+        if B1 = '1' and B1_previo = '0' then
+            B1_previo <= '1';
+        elsif B1 = '0' and B1_previo = '1' then
+            B1_previo <= '0';
+        end if;
+        B1_prev <= B1_previo;
+    end if;
+end process;
+
 
 end Behavioral;
