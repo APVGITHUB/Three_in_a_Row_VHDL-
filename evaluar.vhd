@@ -35,15 +35,25 @@ Tab <= Tab1 xor Tab2;
 E <= '1' when (Tab = "111111111") and V/= '0' else '0';     --todo el tablero completo y nadie gana
 
 --3 en raya
-V <= '1' when S = "000000111" or
-              S = "000111000" or
-              S = "111000000" or
-              S = "001001001" or
-              S = "010010010" or
-              S = "100100100" or
-              S = "100010001" or
-              S = "001010100"
-              else '0';
+V <= '1' when (S(0)='1' and S(1)='1' and S(2)='1') or 
+              (S(3)='1' and S(4)='1' and S(5)='1') or 
+              (S(6)='1' and S(7)='1' and S(8)='1') or 
+              (S(0)='1' and S(3)='1' and S(6)='1') or 
+              (S(1)='1' and S(4)='1' and S(7)='1') or 
+              (S(2)='1' and S(5)='1' and S(8)='1') or 
+              (S(2)='1' and S(4)='1' and S(6)='1') or 
+              (S(0)='1' and S(4)='1' and S(8)='1')
+              else '0'; 
+
+--S = "000000111" or   
+--              S = "000111000" or
+--              S = "111000000" or
+--              S = "001001001" or
+--              S = "010010010" or
+--              S = "100100100" or
+--              S = "100010001" or
+--              S = "001010100"
+--              else '0';
 
 --V1 y V2 tienen que ser un pulso de reloj
 V1 <= '1' when (V = '1' and turno = "01" and B1='0' and B1prev ='1' ) else '0';
