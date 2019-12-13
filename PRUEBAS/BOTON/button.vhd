@@ -1,5 +1,6 @@
 
 --COMPONENTE UN SOLO BOTÓN
+--Como salida envia una salida de 3 bits, 000,001(low),010(medio),100(high)
 -- Para simularlo, fijarse en las frecuencias de los temporizadores
 
 library IEEE;
