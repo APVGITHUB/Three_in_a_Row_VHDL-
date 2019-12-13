@@ -1,0 +1,86 @@
+
+--PARA SIMULARLO, CAMBIARLO SEGUN LAS FRECUENCIAS DE LOS TEMPORIZADORES
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity tb_button is
+end tb_button;
+
+architecture Behavioral of tb_button is
+
+component button is
+           Port (
+                clk: in std_logic;
+                reset: in std_logic;
+                B: in std_logic; --Boton 
+                result: out std_logic_vector(2 downto 0) --vector que almacena el resultado de la columna correspondiente al botón
+                );
+end component;       
+    --Inputs
+   signal clk : std_logic;
+   signal B : std_logic;
+   signal reset : std_logic;
+ 	--Outputs
+   signal result: std_logic_vector(2 downto 0);
+   -- Clock period definitions
+   constant clk_period : time := 8 ns;
+
+begin
+	-- Instantiate the Unit Under Test (UUT)
+    uut: button
+            port map(
+                    clk=>clk,
+                    reset=>reset,
+                    B=>B,
+                    result=>result
+                     );
+   -- Clock process definitions
+    clk_process :process
+                   begin
+                       clk <= '1';
+                       wait for clk_period/2;
+                       clk <= '0';
+                       wait for clk_period/2;
+                 end process;
+-----------------------------------------------------------------------------------------------------------------------
+                    -- Stimulus process
+                    stim_proc: process
+                    begin        
+                       -- hold reset state for 100 ns.
+                         reset <= '1';
+                         B <= '0';
+                         wait for 10 us;
+                         reset <= '0';
+                         wait for 20 us ;
+                      
+                         -- Rebotes por ruido
+                         B <= '1';
+                         wait for 100 ns;
+                         B <= '0';
+                         wait for 10 us;
+                         B <= '1';
+                         -- Boton valido y low
+                         wait for 4 us;
+                         B <= '0';
+                         wait for 10 us;
+                      
+                         -- boton valido y medio
+                         B <= '1';
+                         wait for 10 us;
+                         B <= '0';
+                         wait for 10 us;
+                         -- boton valido y high
+                         B<='1';
+                         wait for 20 us;
+                         B <= '0';
+                         wait for 10 us;
+                 
+                       wait;
+                         
+                    end process;                          
+                   
+
+end Behavioral;
