@@ -180,10 +180,13 @@ begin
         
           if V1='1' then
             V15s <='1';
+            temp5s <='1';
           elsif V2='1' then
             V25s <='1';
+            temp5s <='1';
           elsif E='1' then
             E5s <='1';
+            temp5s <='1';
           end if;
           
           if DF5='1' then
@@ -235,7 +238,8 @@ with col_tablero select
                          "00010010" when "011",
                          "00000010" when "001",
                          "10000010" when "101",
-                         "00000000" when "000";
+                         "00000000" when "000",
+                         "00000000" when others;
                          
 with turn select
     segmentos_turn <= "01100000" when "01",
