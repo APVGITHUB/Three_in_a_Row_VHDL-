@@ -1,8 +1,6 @@
 --HE USADO LAS FRECUENCIAS QUE HE PUESTO EN botones.vhd y antirebotes.vhd (low<5us<medio<15us<high // pulsacion validada por antireb >200ns)
 --PARA VERLO BIEN EN SIMULACION PONER 150 us en tiempo de simulacion
-
-
-
+--EL TIEMPO DE RETARDO DESDE QUE PULSA EL BOTON HASTA QUE APARECE EN "election" SE DEBE AL TIEMPO DE VALIDACION DEL ANTIREBOTES
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
