@@ -35,20 +35,6 @@ architecture Structural of top is
     );
     end component;
     
-    component evaluar is
-    port (
-        clk: in std_logic;
-        reset: in std_logic;
-        Tab1: in std_logic_vector (8 downto 0);
-        Tab2: in std_logic_vector (8 downto 0);
-        turn: in std_logic;
-        B1: in std_logic;
-        B1_prev: in std_logic;
-        V1: out std_logic;      
-        V2: out std_logic;     
-        E: out std_logic                
-    ); 
-    end component;   
     
     component validar is
     port (
@@ -171,19 +157,6 @@ begin
     election => election
     );
     
-    evaluacion: evaluar
-    port map (
-    clk => clk,
-    reset => reset,    
-    Tab1 => Tablero1,
-    Tab2 => Tablero2,
-    turn => turno,
-    B1 => B1,
-    B1_prev => B1_prev,
-    V1 => V1,  
-    V2 => V2,  
-    E => E
-    );
     
     validacion: validar
     port map (
