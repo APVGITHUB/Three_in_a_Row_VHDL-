@@ -7,7 +7,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-
 entity validar is
     port (
         clk: in std_logic;
@@ -22,7 +21,7 @@ entity validar is
         --election: in std_logic_vector (8 downto 0);           -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
         Tablero1: out std_logic_vector (8 downto 0);        -- Tablero jugador 1 => mantenerlo encendido siempre (se va actualizando solo)
         Tablero2: out std_logic_vector (8 downto 0);        -- Tablero jugador 2 => mantenerlo encendido siempre (se va actualizando solo)
---        fail: out std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
+        fail: out std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
         V1: out std_logic;      --victoria jugador 1
         V2: out std_logic;      --victoria jugador 2
         E: out std_logic        --empate
@@ -43,8 +42,8 @@ architecture Behavioral of validar is
     end component;
 
     --determinar eleccion 
-    signal comparar: std_logic_vector(8 downto 0) := "000000000";
-    constant MAX: integer := 125*10**6;
+    signal comparar: std_logic_vector(8 downto 0);--:= "000000000";
+    constant MAX: integer := 1250; -- para 10 us --125*10**6; para 1 seg
     signal seg: integer range 0 to MAX-1;
 
     signal Tab1: std_logic_vector (8 downto 0); --:= "000000000";
@@ -158,6 +157,8 @@ begin
     elsif clk'event and clk = '1' then
         if error = '1' then
             ocho <= '1';
+         elsif seg = MAX-1 then
+            ocho <= '0';
         end if;
     end if;
 end process;
@@ -172,18 +173,17 @@ begin
         if ocho = '1' then
             if seg = MAX-1 then
                 seg <= 0;
-                ocho <= '0';
             else 
                 seg <= seg + 1;
-            end if;
+            end if; 
         end if;
-        --fail <= ocho;
-    end if;
+     end if;
 end process;
 
 --salidas
 Tablero1 <= std_logic_vector(Tab1);
 Tablero2 <= std_logic_vector(Tab2);
+fail <= ocho;
 
 --V1 y V2 tienen que ser un pulso de reloj
 V1 <= '1' when (V = '1' and turno = '0' and B1='1' and B1_prev1 ='0') else '0';
