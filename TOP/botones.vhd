@@ -39,9 +39,9 @@ architecture Behavioral of botones is
      );
     end component;
     
-    signal valido : std_logic_vector(2 downto 0);
+    signal valido : std_logic_vector(2 downto 0); --VALIDAR PULSACIONES B2,B3,B4
     signal afirm: std_logic_vector(2 downto 0);  
-    signal B1_valido : std_logic;
+    signal B1_valido : std_logic; --VALIDAR PULSACION B1
     signal B1_afirm : std_logic;
     signal en: std_logic;
     signal en_prev: std_logic; 
