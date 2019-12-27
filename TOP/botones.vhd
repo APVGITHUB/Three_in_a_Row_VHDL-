@@ -41,6 +41,8 @@ architecture Behavioral of botones is
     
     signal valido : std_logic_vector(2 downto 0);
     signal afirm: std_logic_vector(2 downto 0);  
+    signal B1_valido : std_logic;
+    signal B1_afirm : std_logic;
     signal en: std_logic;
     signal en_prev: std_logic; 
     signal bot: std_logic_vector (1 downto 0);
@@ -65,6 +67,13 @@ architecture Behavioral of botones is
 begin
 
 --CONEXIONES ANTIREBOTES Y BOTONES
+ar1: antirebotes
+    port map (
+        clk  => clk,
+        reset => reset,
+        boton=>B1,
+        filtrado => B1_valido
+    );
 ar2: antirebotes
     port map (
         clk  => clk,
@@ -96,6 +105,20 @@ process(clk,reset)
                 afirm <= valido;
              elsif en = '0' then
                  afirm <= "000";
+             end if;
+         end if;
+end process;
+
+--PULSACION VALIDA DE B1
+process(clk,reset)
+       begin  
+          if reset = '1' then
+             B1_afirm <= '0';
+         elsif clk'event and clk='1' then
+             if B1_valido = '1' then
+                B1_afirm <= B1_valido;
+             elsif B1 = '0' then
+                B1_afirm <= '0';
              end if;
          end if;
 end process;
@@ -220,9 +243,9 @@ begin
         B1_previo <= '0';
         B1_prev <= '0';
     elsif clk'event and clk='1' then
-        if B1 = '1' and B1_previo = '0' then           
+        if B1_afirm ='1' and B1_previo = '0' then           
             B1_previo <= '1';           
-        elsif B1 = '0' and B1_previo = '1' then           
+        elsif B1_afirm = '0' and B1_previo = '1' then           
             B1_previo <= '0';          
         end if;
         B1_prev <= B1_previo;
