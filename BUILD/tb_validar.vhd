@@ -23,7 +23,7 @@ architecture testbench of tb_validar is
            --election: in std_logic_vector (8 downto 0);           -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
            Tablero1: out std_logic_vector (8 downto 0);        -- Tablero jugador 1 => mantenerlo encendido siempre (se va actualizando solo)
            Tablero2: out std_logic_vector (8 downto 0);        -- Tablero jugador 2 => mantenerlo encendido siempre (se va actualizando solo)
-          -- fail: out std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
+           fail: out std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
            
            V1: out std_logic;      --victoria jugador 1
            V2: out std_logic;      --victoria jugador 2
@@ -42,10 +42,10 @@ architecture testbench of tb_validar is
        --signal B1_prev1: std_logic;
        --signal B1_prev2: std_logic;
        signal turno: std_logic;
-       signal election: std_logic_vector (8 downto 0);           -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
+       --signal election: std_logic_vector (8 downto 0);           -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
        signal Tablero1: std_logic_vector (8 downto 0);        -- Tablero jugador 1 => mantenerlo encendido siempre (se va actualizando solo)
        signal Tablero2: std_logic_vector (8 downto 0);        -- Tablero jugador 2 => mantenerlo encendido siempre (se va actualizando solo)
-     --  signal fail: std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
+       signal fail: std_logic;                               -- si la posicion elegida no es valida => fail=1 durante 1 segundo
        
        signal V1: std_logic;      --victoria jugador 1
        signal V2: std_logic;      --victoria jugador 2
@@ -71,7 +71,7 @@ begin
                -- election => election,
                 Tablero1 => Tablero1,
                 Tablero2 => Tablero2,
-          --      fail => fail,
+                fail => fail,
                 V1 => V1,
                 V2 => V2,
                 E => E
@@ -95,10 +95,10 @@ begin
         B2 <='0';
         B3 <= '0';
         B4 <= '0';
+        turno <= '0';
         --B1_prev1 <= '0';
         --B1_prev2 <= '0';
-        turno <= '0';
-        election <= (others => '0');
+        --election <= (others => '0');
         wait for 10 us;
         reset <= '0';
         wait for 20 us;
@@ -116,7 +116,16 @@ begin
         wait for 1 us;
         B1 <='0';
         wait for 10 us;
-        wait;
+         B4 <= '1';
+         wait for 4 us;
+         B4 <= '0';
+         wait for 10 us;
+         --pulsar B1
+         B1 <= '1';
+         wait for 1 us;
+         B1 <='0';
+         wait for 10 us;
+         wait;
     end process;
     
             
