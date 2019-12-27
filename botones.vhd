@@ -115,7 +115,7 @@ begin
     end if;
 end process;
 
--- qué boton se ha pulsado
+-- quÃ© boton se ha pulsado
 process(clk,reset)
 begin
     if reset = '1' then
@@ -155,10 +155,10 @@ begin
         B1_previo <= '0';
         B1_prev <= '0';
     elsif clk'event and clk='1' then
-        if B1 = '1' and B1_previo = '0' then
-            B1_previo <= '1';
-        elsif B1 = '0' and B1_previo = '1' then
-            B1_previo <= '0';
+        if B1 = '1' and B1_previo = '0' then           
+            B1_previo <= '1';           
+        elsif B1 = '0' and B1_previo = '1' then           
+            B1_previo <= '0';          
         end if;
         B1_prev <= B1_previo;
     end if;
