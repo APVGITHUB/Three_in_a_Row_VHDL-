@@ -1,6 +1,4 @@
---HE USADO LAS FRECUENCIAS QUE HE PUESTO EN botones.vhd y antirebotes.vhd (low<5us<medio<15us<high // pulsacion validada por antireb >200ns)
---PARA VERLO BIEN EN SIMULACION PONER 150 us en tiempo de simulacion
---EL TIEMPO DE RETARDO DESDE QUE PULSA EL BOTON HASTA QUE APARECE EN "election" SE DEBE AL TIEMPO DE VALIDACION DEL ANTIREBOTES
+
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -69,7 +67,6 @@ begin
                     begin        
                        -- hold reset state for 100 ns.
                          reset <= '1';
-                         B <= '0';
                          B1 <= '0';
                          B2 <= '0';
                          B3<= '0';
@@ -80,6 +77,10 @@ begin
                          wait for 20 us ;
                       
                          -- Rebotes por ruido(puse 200ns para el antirebotes)
+                         B1 <= '1';
+                         wait for 100 ns;
+                         B1 <='0';
+                         wait for 5 us;
                          B2 <= '1';
                          wait for 100 ns;
                          B2 <= '0';
@@ -91,6 +92,11 @@ begin
                          B4 <= '1';
                          wait for 100 ns;
                          B4 <= '0';                                                  
+                         wait for 10 us;
+                       --Boton B1 valido
+                         B1 <= '1';
+                         wait for 2 us;
+                         B1 <='0';
                          wait for 10 us;
                        -- Boton valido y low
                          B3 <= '1';
