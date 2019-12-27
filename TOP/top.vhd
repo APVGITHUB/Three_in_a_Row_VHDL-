@@ -131,11 +131,12 @@ architecture Structural of top is
         E: in std_logic;
         election: in std_logic_vector (8 downto 0);          
         turn: out std_logic;
-        fail: in std_logic                                     
+        fail: in std_logic;
+        fijar: out std_logic                                     
         );
     end component;
     
-    -- señales
+    -- seÃ±ales
     signal Tablero1: std_logic_vector (8 downto 0);
     signal Tablero2: std_logic_vector (8 downto 0); 
     signal turno: std_logic; 
@@ -153,7 +154,7 @@ architecture Structural of top is
     signal inicio1: std_logic;
     signal inicio2: std_logic;
     signal random: std_logic;
-    
+    signal fijar: std_logic;
     ------
 begin
 
@@ -166,7 +167,7 @@ begin
     B2 => B2,
     B1 => B1,
     B1_prev => B1_prev,
-    fijar => '0',--por poner algo
+    fijar => fijar,
     election => election
     );
     
@@ -259,6 +260,7 @@ begin
      E => E,
      election => election,   
      turn => turno,
-     fail => fail                                        
+     fail => fail,
+     fijar => fijar                                        
      );
 end Structural;
