@@ -28,27 +28,78 @@ entity botones is
 end botones;
 
 architecture Behavioral of botones is
-   
+
+ --DECLARACION COMPONENTE ANTIRREBOTES
+   component antirebotes is
+     port(
+         clk : in std_logic;
+         reset : in std_logic;
+         boton : in std_logic;
+         filtrado: out std_logic
+     );
+    end component;
+    
+    signal valido : std_logic_vector(2 downto 0);
+    signal afirm: std_logic_vector(2 downto 0);  
     signal en: std_logic;
     signal en_prev: std_logic; 
     signal bot: std_logic_vector (1 downto 0);
     
      --temporizador 1
-    constant T1: integer := (125*10**6)/2;     --0,5 segundos
+    constant T1: integer := 625;--lo he puesto a 5us, en realidad es (125*10**6)/2;  para 0,5 segundos
     signal tmp1: integer range 0 to T1;
-    signal medio: std_logic;
+--    signal medio: std_logic;
     signal ovf1: std_logic;
     
     --temporizador 2
-    constant T2: integer := (125*10**6)*3/2;  --1,5 segundos
+    constant T2: integer := 1875;--lo he puesto a 15us, en realidad es(125*10**6)*3/2; para 1,5 segundos
     signal tmp2: integer range 0 to T2;
-    signal arriba: std_logic;
+--    signal arriba: std_logic;
     signal ovf2: std_logic;
    
     signal union: std_logic_vector(3 downto 0);
     signal B1_previo: std_logic;
+    signal selector : std_logic_vector(1 downto 0);
+    signal upper : std_logic;
 
 begin
+
+--CONEXIONES ANTIREBOTES Y BOTONES
+ar2: antirebotes
+    port map (
+        clk  => clk,
+        reset => reset,
+        boton=>B2,
+        filtrado => valido(0)
+    );
+ar3: antirebotes
+        port map (
+            clk  => clk,
+            reset => reset,
+            boton=>B3,
+            filtrado => valido(1)
+        );
+ar4: antirebotes
+            port map (
+                clk  => clk,
+                reset => reset,
+                boton=>B4,
+                filtrado => valido(2)
+            );        
+--ASIGNAR PULSACIÓN AFIRMATIVA A afirm
+process(clk,reset)
+       begin  
+          if reset = '1' then
+             afirm<= (others =>'0');
+         elsif clk'event and clk='1' then
+             if valido /= "000" then
+                afirm <= valido;
+             elsif en = '0' then
+                 afirm <= "000";
+             end if;
+         end if;
+end process;
+
 
 --temporizador 1 (0,5s)
 process(clk,reset)
@@ -95,23 +146,23 @@ en <= '1' when (B4='1' or B3='1' or B2='1') else '0';       --enable activado mi
 process(clk,reset)
 begin
     if reset = '1' then
-        arriba <= '0';
-        medio <= '0';
         en_prev <= '0';
+        selector <=(others =>'0');
     elsif clk'event and clk = '1' then
-        if ((en='1' and en_prev='0') or fijar = '1') then              --acabo de pulsar el boton (reset)
-            medio <='0';
-            arriba <= '0';
-            en_prev <= '1';
-        elsif en = '1' and en_prev = '1' then       --mantener pulsado el boton
-            if ovf2 = '1' then
-                arriba <= '1';
-            elsif ovf1 = '1' then
-                medio <= '1';
+            if ((en='1' and en_prev='0' and afirm /= "000")) then 
+                en_prev <= '1';
+                selector <= "01";
+            elsif en = '1' and en_prev = '1' then       --mantener pulsado el boton
+                if upper = '1' then
+                    selector <= "11";
+                elsif ovf1 = '1' and ovf2 ='0' then
+                      selector <= "10";
+                end if;
+            elsif en = '0' and en_prev = '1' then       --soltar el boton
+                 en_prev <= '0';
+            elsif fijar = '1' then
+                 selector <= "00";
             end if;
-        elsif en = '0' and en_prev = '1' then       --soltar el boton
-            en_prev <= '0';
-        end if;
     end if;
 end process;
 
@@ -123,8 +174,8 @@ begin
     elsif clk'event and clk = '1' then
         if fijar = '1' then
             bot <= (others => '0');
-        else
-            if B4 = '1' then
+        elsif afirm /= "000" then
+             if B4 = '1' then
                 bot <= "01";
             elsif B3 = '1' then
                 bot <= "10";
@@ -135,18 +186,32 @@ begin
     end if;
 end process;
 
---Eleccion realizada dependiendo del boton pulsado y del tiempo pulsado (decodificador)
-union <= bot & arriba & medio;
+--ASIGNAR PULSACION UP HASTA DEJAR LA PULSACION
+process(clk,reset)
+    begin  
+        if reset = '1' then
+        upper<='0';
+        elsif clk'event and clk='1' then
+               if ovf2 = '1' then
+                    upper <= ovf2;
+               elsif en = '0' then
+                    upper <= '0';
+                end if;
+        end if;
+end process;
 
-election <= "000000001" when union = "0100" else
-            "000000010" when union = "0101" else
-            "000000100" when union = "0110" else
-            "000001000" when union = "1000" else
-            "000010000" when union = "1001" else
-            "000100000" when union = "1010" else
-            "001000000" when union = "1100" else
-            "010000000" when union = "1101" else
-            "100000000" when union = "1110" else
+--Eleccion realizada dependiendo del boton pulsado y del tiempo pulsado (decodificador)
+union <= bot & selector;
+
+election <= "000000001" when union = "0101" else
+            "000000010" when union = "0110" else
+            "000000100" when union = "0111" else
+            "000001000" when union = "1001" else
+            "000010000" when union = "1010" else
+            "000100000" when union = "1011" else
+            "001000000" when union = "1101" else
+            "010000000" when union = "1110" else
+            "100000000" when union = "1111" else
             "000000000";
 
 process (clk,reset)
