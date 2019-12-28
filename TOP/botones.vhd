@@ -21,7 +21,8 @@ entity botones is
         B3: in std_logic;
         B2: in std_logic;
         B1: in std_logic;
-        B1_prev: out std_logic;
+        B1val: out std_logic; --HE AÑADIDO ESTA SALIDA PARA QUE SEA B1 TENIENDO EN CUENTA EL ANTIRREBOTE
+        B1_prev1: out std_logic;
         fijar: in std_logic;
         election: out std_logic_vector (8 downto 0)     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
     );
@@ -241,16 +242,16 @@ process (clk,reset)
 begin
     if reset = '1' then
         B1_previo <= '0';
-        B1_prev <= '0';
     elsif clk'event and clk='1' then
         if B1_afirm ='1' and B1_previo = '0' then           
             B1_previo <= '1';           
         elsif B1_afirm = '0' and B1_previo = '1' then           
             B1_previo <= '0';          
         end if;
-        B1_prev <= B1_previo;
+        
     end if;
 end process;
-
+B1val <= B1_afirm;
+B1_prev1 <= B1_previo;
 
 end Behavioral;
