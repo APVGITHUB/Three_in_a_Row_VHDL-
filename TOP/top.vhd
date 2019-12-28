@@ -29,7 +29,8 @@ architecture Structural of top is
         B3: in std_logic;
         B2: in std_logic;
         B1: in std_logic;
-        B1_prev: out std_logic;
+        B1val: out std_logic;
+        B1_prev1: out std_logic;
         fijar: in std_logic;
         election: out std_logic_vector (8 downto 0)     
     );
@@ -40,9 +41,8 @@ architecture Structural of top is
     port (
         clk: in std_logic;
         reset: in std_logic;
-        B1: in std_logic;
+        B1val: in std_logic;
         B1_prev1: in std_logic;
-        B1_prev2: in std_logic;
         turn: in std_logic;
         election: in std_logic_vector (8 downto 0);           
         Tablero1: out std_logic_vector (8 downto 0);        
@@ -125,9 +125,9 @@ architecture Structural of top is
     -- señales
     signal Tablero1: std_logic_vector (8 downto 0);
     signal Tablero2: std_logic_vector (8 downto 0); 
-    signal turno: std_logic; 
-    signal B1_prev: std_logic;
-    signal B1_prev2: std_logic; 
+    signal turno: std_logic;
+    signal B1val: std_logic; 
+    signal B1_prev1: std_logic;
     signal election: std_logic_vector (8 downto 0);
     signal V1: std_logic;
     signal V2: std_logic;
@@ -152,7 +152,8 @@ begin
     B3 => B3,
     B2 => B2,
     B1 => B1,
-    B1_prev => B1_prev,
+    B1val => B1val,
+    B1_prev1 => B1_prev1,
     fijar => fijar,
     election => election
     );
@@ -162,9 +163,8 @@ begin
     port map (
     clk => clk,
     reset=> reset,
-    B1 => B1,
-    B1_prev1 => B1_prev,
-    B1_prev2 => B1_prev2,
+    B1val => B1val,
+    B1_prev1 => B1_prev1,
     turn => turno,
     election => election,          
     Tablero1 => Tablero1,        
@@ -227,7 +227,7 @@ begin
      clk => clk,
      reset => reset,
      B1 => B1,
-     B1_prev => B1_prev,
+     B1_prev => B1_prev1,
      V1 => V1,
      V2 => V2,
      E => E,
