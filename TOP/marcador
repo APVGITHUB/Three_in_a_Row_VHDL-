@@ -111,7 +111,7 @@ end process;
 
 
  --NUEVA PARTIDA: ¿quién tiene el primer turno?  
-inicio1 <= '1' when V2 = '1' and G2 = '0' and G1 = '0' else '0';
+inicio1 <= '1' when V2 = '1' and G2 = '0' and G1 = '0' else '0'; --se podria poner cmo una sola
 inicio2 <= '1' when V1 = '1' and G2 = '0' and G1 = '0' else '0';
 random <= '1' when E = '1' and G2 = '0' and G1 = '0' else '0';
 
