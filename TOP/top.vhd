@@ -32,7 +32,10 @@ architecture Structural of top is
         B1val: out std_logic;
         B1_prev1: out std_logic;
         fijar: in std_logic;
-        election: out std_logic_vector (8 downto 0)     
+        election: out std_logic_vector (8 downto 0);
+        random: in std_logic;
+        inicio1: in std_logic;
+        inicio2: in std_logic               
     );
     end component;
     
@@ -50,8 +53,10 @@ architecture Structural of top is
         fail: out std_logic;                               
         V1: out std_logic;     
         V2: out std_logic;      
-        E: out std_logic        
-                   
+        E: out std_logic;
+        random: in std_logic;
+        inicio1: in std_logic;
+        inicio2: in std_logic                                    
         );
     end component;
       
@@ -155,7 +160,10 @@ begin
     B1val => B1val,
     B1_prev1 => B1_prev1,
     fijar => fijar,
-    election => election
+    election => election,
+    random => random,
+    inicio1 => inicio1,
+    inicio2 => inicio2    
     );
     
     
@@ -172,7 +180,10 @@ begin
     fail => fail,                            
     V1 => V1,  
     V2 => V2,    
-    E => E
+    E => E,
+    random => random,
+    inicio1 => inicio1,
+    inicio2 => inicio2
     );
     
     actualizar_marcador: marcador  
