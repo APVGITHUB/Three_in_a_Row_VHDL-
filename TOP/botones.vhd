@@ -24,7 +24,10 @@ entity botones is
         B1val: out std_logic; --HE AÑADIDO ESTA SALIDA PARA QUE SEA B1 TENIENDO EN CUENTA EL ANTIRREBOTE
         B1_prev1: out std_logic;
         fijar: in std_logic;
-        election: out std_logic_vector (8 downto 0)     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
+        election: out std_logic_vector (8 downto 0);     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
+        random: in std_logic;
+        inicio1: in std_logic;
+        inicio2: in std_logic      
     );
 end botones;
 
@@ -227,7 +230,8 @@ end process;
 --Eleccion realizada dependiendo del boton pulsado y del tiempo pulsado (decodificador)
 union <= bot & selector;
 
-election <= "000000001" when union = "0101" else
+election <= "000000000" when (inicio1 = '1' or inicio2 ='1' or random = '1') else
+            "000000001" when union = "0101" else
             "000000010" when union = "0110" else
             "000000100" when union = "0111" else
             "000001000" when union = "1001" else
