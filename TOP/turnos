@@ -48,12 +48,12 @@ begin
         fijar <= '0';
         --inicio <= '0';
     elsif clk'event and clk = '1' then          
-        if V1 = '1' then --CREO QUE ESTO NO HACE FALTA: EL TURNO YA SE CAMBIA CUANDO SE SUELTA EL BOTON Y CON ESTO LO CAMBIAS DOS VECES
-            turno <= '1';
-        elsif V2 = '1' then
-            turno <= '0';
---        elsif E <= '1' then    --ESTO SI FUNCIONA SI QUE ES NECESARIO
---            turno <= lfsr(2);
+        --if V1 = '1' then --CREO QUE ESTO NO HACE FALTA: EL TURNO YA SE CAMBIA CUANDO SE SUELTA EL BOTON Y CON ESTO LO CAMBIAS DOS VECES
+            --turno <= '1';
+        --elsif V2 = '1' then
+            --turno <= '0';
+       if E = '1' then    --ESTO SI FUNCIONA SI QUE ES NECESARIO
+            turno <= lfsr(2);
         end if;
         if B1 = '0' and B1_prev = '1' and ya_cambiado = '0' and fail = '0' and election /="000000000" then --TURNO SE CAMBIA AL SOLTAR EL BOTON (QUIZAS CONVIENE USAR B1val POR LOS REBOTES)
             turno <= not(turno);
