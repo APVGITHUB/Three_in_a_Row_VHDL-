@@ -33,18 +33,19 @@ architecture Behavioral of Displays is
     signal E5s: std_logic;
     
     signal divider: integer range 1 to 1000;
-    constant MaxDFSel: integer := 10;--TIEMPOS PARA LA SIMULACION 125000/5; -- Div.Freq 5kHz  
+    constant MaxDFSel: integer := 125000/5; -- Div.Freq 5kHz  
     signal count_DFSel: integer range 0 to MaxDFSel-1;
     signal DFSel: std_logic;
     signal sel: integer range 0 to 3;
     ---------------------------------------------------------------------
-    constant MaxDFTab: integer := 6;--125000/500; --Div.Freq 500 kHz
+    constant MaxDFTab: integer := 125000/500; --Div.Freq 500 kHz
+    constant MaxTab: integer := 15;
     signal count_DFTab: integer range 0 to MaxDFTab-1;
     signal DFTab: std_logic;
-    signal tab: integer range 0 to 4;
+    signal tab: integer range 0 to MaxTab;
     -------------------------------------------------------------------
     -- Divisor de Frecuencia que se usa para el selector de displays cuando hay que mostrar 1,2 o  = durante 5 segs
-    constant MaxDF5: integer := 50;--125000000/5; --Div.Freq 5 Hz
+    constant MaxDF5: integer := 125000000/5; --Div.Freq 5 Hz
     signal count_DF5: integer range 0 to MaxDF5-1;
     signal DF5: std_logic;
     signal countsel5: integer range 0 to 3;
@@ -101,7 +102,7 @@ PermSelector:process(clk, reset) -- Permuta a 0,1,2,3 el contador sel que contro
 DivFreqTab: process(clk, reset)
     begin
       if reset = '1' then
-        count_DFTab <= 0;
+        count_DFTab <= 1;
       elsif (clk' event and clk = '1') then
         if DFSel = '1' then
            count_DFTab <= 0;
@@ -115,13 +116,15 @@ DivFreqTab: process(clk, reset)
       end if;
      end process;
      
-DFTab <= '1' when count_DFTab = MaxDFTab/divider-1 else '0';     
+DFTab <= '1' when count_DFTab = 0  else '0';     
     
 PermTab:process(clk, reset) -- permuta el tablero que se debe mostrar entre el tablero1 y el tablero2
    begin
-     if (clk' event and clk = '1') then
+     if reset = '1' then
+        tab <= 0;
+     elsif (clk' event and clk = '1') then
         if DFTab = '1' then
-            if tab = 4 then
+            if tab = MaxTab then
                tab <= 0;
             else
                tab <= tab + 1;
@@ -225,8 +228,11 @@ selector_5s <= "0001" when 0,
                "1000" when 3;
                
 with tab select
-tablero <= (Tablero2 or tablero1) when 0,
-           Tablero1 when others;
+tablero <=  (Tablero2 or tablero1) when 0,
+            (Tablero2 or tablero1) when 1,
+            (Tablero2 or tablero1) when 2,
+            (Tablero2 or tablero1) when 3,
+            Tablero1 when others;
 
 with sel select         
 col_tablero <=  tablero(8 downto 6) when 1, 
@@ -279,7 +285,7 @@ with election select
                           "00000010" when "000000001",
                           "00000010" when "000001000",
                           "00000010" when "001000000",
-                          "--------" when others;
+                          "00000000" when others;
                     
 segmentos <= "01100000" when (finjuego='1' and gana1='1')else
              "11011010" when (finjuego='1' and gana2='1')else
@@ -288,7 +294,7 @@ segmentos <= "01100000" when (finjuego='1' and gana1='1')else
              "10000010" when (temp5s='1' and E5s='1')else
              "11111110" when (fail='1' and sel_election=sel) else
              --ABAJO EL OR ERA UN AND, PERO NO FUNCIONABA
-             segmentos_partida or segmentos_electioncmp when (election/="000000000" and sel_election=sel) else
+             (segmentos_partida or segmentos_electioncmp) when (election/="000000000" and sel_election=sel) else
              segmentos_partida;
              
 selector <= selector_5s when temp5s='1' else
