@@ -55,13 +55,13 @@ architecture Behavioral of botones is
     signal divider: integer range 1 to 1000;
     
      --temporizador 1
-    constant T1: integer := 625;--lo he puesto a 5us, en realidad es (125*10**6)/2;  para 0,5 segundos
+    constant T1: integer := (125*10**6)/2; -- para 0,5 segundos
     signal tmp1: integer range 0 to T1-1;
 --    signal medio: std_logic;
     signal ovf1: std_logic;
     
     --temporizador 2
-    constant T2: integer := 1875;--lo he puesto a 15us, en realidad es(125*10**6)*3/2; para 1,5 segundos
+    constant T2: integer := (125*10**6)*3/2; --para 1,5 segundos
     signal tmp2: integer range 0 to T2-1;
 --    signal arriba: std_logic;
     signal ovf2: std_logic;
