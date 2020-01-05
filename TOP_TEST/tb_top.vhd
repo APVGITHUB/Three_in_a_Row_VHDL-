@@ -16,6 +16,7 @@ use IEEE.NUMERIC_STD.ALL;
 -- TURNO DE VICTORIA A J2 DESPUÉS DEL EMPATE, HACIENDO QUE SÍ CAMBIEN LOS DISPLAYS. EN REALIDAD ESTO JAMÁS LLEGARÁ A OCURRIR PQ SE RESETEA ANTES.
 -- AL FINAL SE RALLA PQ COMO YA HAY UN GANADOR NO RESETEA EL MARCADOR, ETC. PERO COMO HE DICHO ESTO NO AFECTA.
 
+--HE HECHO DOS CLK_PERIOD, PARA NO TENER QUE CAMBIAR TODO, UNO MULTIPLICADO POR 100. SE PUEDE, PERO NO SE SI QUEDA MEJOR, MULTIPLICAR LOS TIEMPOS POR 100 DIRECTAMENTE
 entity tb_top is
 
 end tb_top;
@@ -49,7 +50,8 @@ architecture testbench of tb_top is
     
     
     --declaracion tiempo
-    constant clk_period : time := 8 ns;
+    constant clk_period_real : time := 8 ns;
+    constant clk_period : time := 800ns;
 
     begin
     
@@ -72,9 +74,9 @@ architecture testbench of tb_top is
      process
      begin
          clk <= '1';
-         wait for clk_period/2;
+         wait for clk_period_real/2;
          clk <= '0';
-         wait for clk_period/2;        
+         wait for clk_period_real/2;        
      end process;
      
      --generacion resto de entradas
@@ -211,7 +213,7 @@ architecture testbench of tb_top is
          
                   
          
-         wait for clk_period*100;
+         wait for clk_period*10000;
          B2 <= '1';
          wait for clk_period*500;
          B2 <= '0';
@@ -285,7 +287,7 @@ architecture testbench of tb_top is
          B1 <= '0';   
          
          
-         wait for clk_period*200;
+         wait for clk_period*20000;
          reset <= '0';
          wait for clk_period*100;
          B3 <= '1';
@@ -409,7 +411,7 @@ architecture testbench of tb_top is
          
                   
          
-         wait for clk_period*100;
+         wait for clk_period*10000;
          B2 <= '1';
          wait for clk_period*500;
          B2 <= '0';
@@ -482,7 +484,7 @@ architecture testbench of tb_top is
          wait for clk_period*1000;
          B1 <= '0';
          
-                  wait for clk_period*200;
+                  wait for clk_period*20000;
          reset <= '0';
          wait for clk_period*100;
          B3 <= '1';
@@ -606,7 +608,7 @@ architecture testbench of tb_top is
          
                   
          
-         wait for clk_period*100;
+         wait for clk_period*10000;
          B2 <= '1';
          wait for clk_period*500;
          B2 <= '0';
@@ -679,7 +681,7 @@ architecture testbench of tb_top is
          wait for clk_period*1000;
          B1 <= '0';
          
-                  wait for clk_period*200;
+                  wait for clk_period*20000;
          reset <= '0';
          wait for clk_period*100;
          B3 <= '1';
@@ -803,7 +805,7 @@ architecture testbench of tb_top is
          
                   
          
-         wait for clk_period*100;
+         wait for clk_period*10000;
          B2 <= '1';
          wait for clk_period*500;
          B2 <= '0';
