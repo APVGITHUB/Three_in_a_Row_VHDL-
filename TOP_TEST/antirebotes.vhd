@@ -31,7 +31,7 @@ architecture behavioral of antirebotes is
     signal T : std_logic;
     
     signal divider: integer range 1 to 1000;
-    constant CONT : integer:=25; --Supongo un pulso valido a partir de 200ns. Es para que el testbench sea mas corto
+    constant CONT : integer:=125*10**5; --Supongo un pulso valido a partir de 0'1s
     signal cuenta : integer range 0 to CONT-1;
     
     
