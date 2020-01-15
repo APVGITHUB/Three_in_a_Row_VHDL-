@@ -81,9 +81,6 @@ DivFreq500kHz: process(clk, reset)
       if reset = '1' then
         count_DFTab <= 1;
       elsif (clk' event and clk = '1') then
-        if DFSel = '1' then
-           count_DFTab <= 0;
-        else
          if count_DFTab = MaxDFTab/divider-1 then
            count_DFTab <= 0;
          else
