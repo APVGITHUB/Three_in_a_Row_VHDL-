@@ -46,13 +46,13 @@ architecture Behavioral of Displays is
     signal DFTab: std_logic;
     signal tab: integer range 0 to MaxTab;
 --------------------------------------------------------------------------------------------
-constant MaxDFSel: integer := 125000/5; -- Div.Freq 5kHz  
+constant MaxDFSel: integer := (125000/5)/MaxDFTab; -- Div.Freq 5kHz  
     signal count_DFSel: integer range 0 to MaxDFSel-1;
     signal DFSel: std_logic;
     signal sel: integer range 0 to 3;
     -------------------------------------------------------------------
     -- Divisor de Frecuencia que se usa para el selector de displays cuando hay que mostrar 1,2 o  = durante 5 segs
-    constant MaxDF5: integer := 125000000/5; --Div.Freq 5 Hz
+    constant MaxDF5: integer := (125000000/5)/MaxDFSel; --Div.Freq 5 Hz
     signal count_DF5: integer range 0 to MaxDF5-1;
     signal DF5: std_logic;
     signal countsel5: integer range 0 to 3;
@@ -117,11 +117,13 @@ DivFreqSel: process(clk, reset) -- 5 kHz
         if reset = '1' then
             count_DFSel <= 0;
         elsif (clk' event and clk = '1') then
+	if DFTab = '1' then
             if count_DFSel = MaxDFSel/divider-1 then
                 count_DFSel <= 0;
             else
                 count_DFSel <= count_DFSel + 1;
             end if;
+	end if;
         end if;
     end process;
 
@@ -147,6 +149,7 @@ begin
     if reset='1' then
         count_DF5 <= 0;
     elsif (clk' event and clk='1') then
+	if DFSel = '1' then
         if count_DF5 = MaxDF5/divider-1 then
             count_DF5 <= 0;
         else
