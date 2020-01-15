@@ -22,7 +22,7 @@ entity botones is
         B3: in std_logic;
         B2: in std_logic;
         B1: in std_logic;
-        B1val: out std_logic; --HE A�ADIDO ESTA SALIDA PARA QUE SEA B1 TENIENDO EN CUENTA EL ANTIRREBOTE
+        B1val: out std_logic; --HE AÑADIDO ESTA SALIDA PARA QUE SEA B1 TENIENDO EN CUENTA EL ANTIRREBOTE
         B1_prev1: out std_logic;
         fijar: in std_logic;
         election: out std_logic_vector (8 downto 0);     -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)              
@@ -30,7 +30,6 @@ entity botones is
         inicio1: in std_logic;
         inicio2: in std_logic;
         fin_tiempo: in std_logic;
-        --fin_maquina: in std_logic;
         reset_election: in std_logic      
     );
 end botones;
@@ -110,7 +109,7 @@ ar4: antirebotes
                 boton=>B4,
                 filtrado => valido(2)
             );        
---ASIGNAR PULSACI�N AFIRMATIVA A afirm
+--ASIGNAR PULSACIÓN AFIRMATIVA A afirm
 process(clk,reset)
        begin  
           if reset = '1' then
@@ -206,7 +205,7 @@ begin
     end if;
 end process;
 
--- qué boton se ha pulsado
+-- quÃ© boton se ha pulsado
 process(clk,reset)
 begin
     if reset = '1' then
