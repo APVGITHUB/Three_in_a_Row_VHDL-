@@ -40,8 +40,7 @@ architecture Structural of top is
         inicio1: in std_logic;
         inicio2: in std_logic;
         fin_tiempo: in std_logic;
-        reset_election: in std_logic
-        --fin_maquina: in std_logic                
+        reset_election: in std_logic             
     );
     end component;
     
@@ -67,7 +66,7 @@ architecture Structural of top is
         inicio2: in std_logic;
         fin_tiempo: in std_logic;
         reset_election: out std_logic
-        --fin_maquina: out std_logic                                      
+                                             
         );
     end component;
       
@@ -174,7 +173,6 @@ architecture Structural of top is
     signal fijar: std_logic;
     signal fin_tiempo: std_logic;
     signal reset_election: std_logic;
-    --signal fin_maquina: std_logic; 
     signal parar_temporizador: std_logic;
     
     ------
@@ -198,7 +196,6 @@ begin
     inicio2 => inicio2,
     fin_tiempo => fin_tiempo,    
     reset_election => reset_election
-    --fin_maquina => fin_maquina
     );
     
     

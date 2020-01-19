@@ -31,6 +31,7 @@ end component;
 
   --Inputs
    signal clk : std_logic;
+   signal reset : std_logic;
    signal B : std_logic;
    signal B1 : std_logic;
    signal B1val : std_logic;
@@ -39,8 +40,7 @@ end component;
    signal B3 : std_logic;
    signal B4 : std_logic;
    signal fijar : std_logic;
-   signal election: std_logic_vector(8 downto 0);
-   signal reset : std_logic;
+   signal election: std_logic_vector(8 downto 0); 
    signal random: std_logic;
    signal inicio1: std_logic;
    signal inicio2: std_logic;
@@ -63,7 +63,6 @@ begin
                     B1_prev => B1_prev,
                     fijar => fijar,
                     election=>election,
-                    reset => reset,
                     random => random,
                     inicio1 => inicio1,
                     inicio2 => inicio2,
@@ -93,7 +92,7 @@ begin
                          inicio1 <= '0';
                          inicio2 <= '0';
                          fin_tiempo <= '0';
-                         reset_election <= reset_election'0';
+                         reset_election <= '0';
                          wait for 10 us;
                          reset <= '0';
                          wait for 20 us ;

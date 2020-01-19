@@ -14,7 +14,7 @@ entity validar is
         reset: in std_logic;
         speed: in std_logic;
         mode: in std_logic_vector (1 downto 0);
-        B1val: in std_logic; -- EN LUGAR DE B1 USAMOS LA SEÑAL TENIENDO EN CUENTA EL ANTIRREBOTE
+        B1val: in std_logic; 
         B1_prev1: in std_logic;
         turn: in std_logic;
         election: in std_logic_vector (8 downto 0);           -- eleccion => mantener parpadeo simepre (se pone a cero al comienzo de cada turno)
@@ -63,9 +63,11 @@ architecture Behavioral of validar is
 
 begin
 
+-- se comprueba si la casilla elegida está libre
 Tab <= Tab1 xor Tab2;
 comparar <= election and Tab;
 
+--Generador de posiciones aleatorias para los modos 2 y 3
 process (clk,reset)
 begin
     if reset = '1' then
@@ -85,12 +87,14 @@ begin
     if reset='1' then
         Tab1<="000000000";
         Tab2<="000000000";
-
         resetear_election <= '0';
+        
     elsif clk'event and clk='1' then
         if resetear_election = '1' then
             resetear_election <= '0';
         end if;
+        --Si hay una casilla elegida en una posición libre se añade al tablero correspondiente (y se indica que se debe poner la elección a 0)
+        --En caso de que se haya acabado el tiempo, o de que juegue la máquina, se escoge una casilla libre aleatoria.
         if turn='0' then 
             if (B1_prev1='1' and comparar = "000000000" and election /= "000000000") then
                 Tab1 <= (Tab1 xor election);
@@ -144,6 +148,7 @@ begin
                 resetear_election <= '1';                                    
             end if;        
         end if;       
+        --Con cada nueva partida se ponen los tableros a cero.
         if (inicio1='1' or inicio2='1' or random = '1') then
             Tab1<="000000000";
             Tab2<="000000000";   
@@ -152,6 +157,8 @@ begin
 end process;
 
 reset_election <= resetear_election;
+
+--Error dura un pulso e indica que la casilla no está libre
 error <= '1' when (B1val = '1' and B1_prev1 = '0' and comparar /= "000000000") else '0';
 
 

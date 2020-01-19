@@ -27,6 +27,7 @@ architecture Behavioral of temporizador is
     
     begin
     
+    --Divisor de frecuencia. DF cuenta segundos
     DivFreq: process(clk, reset)
         begin
             if reset = '1' then
@@ -45,6 +46,8 @@ architecture Behavioral of temporizador is
     divider <= 1000 when speed = '1' else 1;
     DF <= '1' when count_DF = MaxDF/divider-1 else '0';
  
+ 
+    --segun el número de partidas jugadas se selecciona el limite correspondiente
     with n_partidas select
         limite <= 10 when "0000",
                   9 when "0001",
@@ -55,7 +58,8 @@ architecture Behavioral of temporizador is
                   4 when "0110",
                   3 when "0111",
                   3 when others;
-                  
+    
+    --Se reinicia el contador cada vez que se llega al límite, cambia el turno o se indica, por otro motivo, que hay que parar              
     process(clk, reset)
     begin
         if reset = '1' then
@@ -69,6 +73,7 @@ architecture Behavioral of temporizador is
         end if;
     end process;
     
+    -- cuando se acaba el tiempo se saca un pulso positivo que lo indica
     fin_tiempo <= '1' when contador=limite and mode = "01" else '0';
             
  

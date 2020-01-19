@@ -25,7 +25,7 @@ architecture testbench of tb_validar is
            
            V1: out std_logic;      --victoria jugador 1
            V2: out std_logic;      --victoria jugador 2
-           E: out std_logic        --empate
+           E: out std_logic;        --empate
            
            random: in std_logic;     
            inicio1: in std_logic;
@@ -71,7 +71,6 @@ begin
                 mode => mode,
                 B1val => B1val,
                 B1_prev1 => B1_prev1,
-                B1_prev2 => B1_prev2,
                 turn => turn,
                 election => election,
                 Tablero1 => Tablero1,
@@ -122,14 +121,12 @@ begin
         wait for clk_period;
         B1_prev1 <= '1';
         wait for clk_period;
-        B1_prev2 <= '1';
         wait for clk_period*10;
         B1val <= '0';
         wait for clk_period;
         B1_prev1 <= '0';
         turn <= '1';
         wait for clk_period;
-        B1_prev2 <= '0';
         wait for clk_period*10;
         election <= "100000000";
         wait for clk_period*10;
@@ -138,14 +135,12 @@ begin
         wait for clk_period;
         B1_prev1 <= '1';
         wait for clk_period;
-        B1_prev2 <= '1';
         wait for clk_period*10;
         B1val <= '0';
         wait for clk_period;
         B1_prev1 <= '0';
         turn <= '0';
         wait for clk_period;
-        B1_prev2 <= '0';
         wait for clk_period*10;
         election <= "000000010";
         wait for clk_period*10;
@@ -154,14 +149,12 @@ begin
         wait for clk_period;
         B1_prev1 <= '1';
         wait for clk_period;
-        B1_prev2 <= '1';
         wait for clk_period*10;
         B1val <= '0';
         wait for clk_period;
         B1_prev1 <= '0';
         turn <= '1';
         wait for clk_period;
-        B1_prev2 <= '0';
         wait for clk_period*10;
         election <= "110000000";
         wait for clk_period*10;
@@ -169,15 +162,12 @@ begin
         B1val <= '1';
         wait for clk_period;
         B1_prev1 <= '1';
-        wait for clk_period;
-        B1_prev2 <= '1';
         wait for clk_period*10;
         B1val <= '0';
         wait for clk_period;
         B1_prev1 <= '0';
         turn <= '0';
         wait for clk_period;
-        B1_prev2 <= '0';
         wait for clk_period*10;
         election <= "000000111";
         wait for clk_period*10;
@@ -186,14 +176,12 @@ begin
         wait for clk_period;
         B1_prev1 <= '1';
         wait for clk_period;
-        B1_prev2 <= '1';
         wait for clk_period*10;
         B1val <= '0';
         wait for clk_period;
         B1_prev1 <= '0';
         turn <= '1';
         wait for clk_period;
-        B1_prev2 <= '0';
         wait;
     end process;
     
